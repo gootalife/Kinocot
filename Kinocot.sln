@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kinocot", "Kinocot\Kinocot.csproj", "{DFD300D8-9778-4C3E-A6E9-E0B631FBC642}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kinocot.Plugin", "Plugins\Kinocot.Plugin\Kinocot.Plugin.csproj", "{9E979E97-A0C0-4864-B6DB-ACA76EB6C6E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kinocot.Plugin.Memo", "Plugins\Kinocot.Plugin.Memo\Kinocot.Plugin.Memo.csproj", "{4F05EB62-A144-4D84-8606-971ECFD32455}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kinocot.Plugin.Clock", "Plugins\Kinocot.Plugin.Clock\Kinocot.Plugin.Clock.csproj", "{0937A721-D453-498A-A383-513A42822974}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kinocot.Plugin.Timer", "Plugins\Kinocot.Plugin.Timer\Kinocot.Plugin.Timer.csproj", "{40378A7A-DADD-45F4-BF42-376E3A90FF33}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kinocot.Plugin.Twitter", "Plugins\Kinocot.Plugin.Twitter\Kinocot.Plugin.Twitter.csproj", "{7E19AFFA-49D8-4F56-9327-B70722CD67F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kinocot.Plugin.Weather", "Plugins\Kinocot.Plugin.Weather\Kinocot.Plugin.Weather.csproj", "{D3888245-FEA8-4F95-8D8C-9815BEA76F64}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DFD300D8-9778-4C3E-A6E9-E0B631FBC642}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFD300D8-9778-4C3E-A6E9-E0B631FBC642}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFD300D8-9778-4C3E-A6E9-E0B631FBC642}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFD300D8-9778-4C3E-A6E9-E0B631FBC642}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E979E97-A0C0-4864-B6DB-ACA76EB6C6E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E979E97-A0C0-4864-B6DB-ACA76EB6C6E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E979E97-A0C0-4864-B6DB-ACA76EB6C6E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E979E97-A0C0-4864-B6DB-ACA76EB6C6E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F05EB62-A144-4D84-8606-971ECFD32455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F05EB62-A144-4D84-8606-971ECFD32455}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F05EB62-A144-4D84-8606-971ECFD32455}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F05EB62-A144-4D84-8606-971ECFD32455}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0937A721-D453-498A-A383-513A42822974}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0937A721-D453-498A-A383-513A42822974}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0937A721-D453-498A-A383-513A42822974}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0937A721-D453-498A-A383-513A42822974}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40378A7A-DADD-45F4-BF42-376E3A90FF33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40378A7A-DADD-45F4-BF42-376E3A90FF33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40378A7A-DADD-45F4-BF42-376E3A90FF33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40378A7A-DADD-45F4-BF42-376E3A90FF33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E19AFFA-49D8-4F56-9327-B70722CD67F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E19AFFA-49D8-4F56-9327-B70722CD67F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E19AFFA-49D8-4F56-9327-B70722CD67F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E19AFFA-49D8-4F56-9327-B70722CD67F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3888245-FEA8-4F95-8D8C-9815BEA76F64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3888245-FEA8-4F95-8D8C-9815BEA76F64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3888245-FEA8-4F95-8D8C-9815BEA76F64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3888245-FEA8-4F95-8D8C-9815BEA76F64}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {10AD7848-BF29-470C-B4BD-B26E9E93B737}
+	EndGlobalSection
+EndGlobal

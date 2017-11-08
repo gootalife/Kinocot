@@ -1,0 +1,25 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
+        x:Class="Kinocot.MainWindow" 
+        mc:Ignorable="d"
+        Title="Kinocot" Height="400" Width="450"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Topmost="True">
+    <Canvas Name="Root">
+        <Image x:Name="Mascot" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="180" Canvas.Top="90" MouseLeftButtonDown="WindowDragMove" Panel.ZIndex="1">
+            <Image.ContextMenu>
+                <ContextMenu>
+                    <MenuItem x:Name="PluginsMenu" Header="機能"/>
+                    <MenuItem Header="終了" Click="QuitClick"/>
+                </ContextMenu>
+            </Image.ContextMenu>
+        </Image>
+    </Canvas>
+</Window>

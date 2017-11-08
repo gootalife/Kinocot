@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="Kinocot.Plugin.Twitter.TwitterControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Kinocot.Plugin.Twitter"
+             mc:Ignorable="d" 
+             d:DesignHeight="80" d:DesignWidth="180">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="1*"/>
+
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="11*"/>
+            <ColumnDefinition Width="11*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Rectangle Fill="White" Stroke="Black" RadiusX="5" RadiusY="5" StrokeThickness="2" Grid.RowSpan="6" Grid.ColumnSpan="6"/>
+        <TextBlock Text="Twitter" Grid.Column="1" FontWeight="Bold" />
+        <TextBox Name="TweetText" TextWrapping="Wrap" AcceptsReturn="True" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" />
+        <TextBlock Name="Navi" Grid.Column="2" FontSize="10" VerticalAlignment="Center" IsHitTestVisible="True" HorizontalAlignment="Center" Grid.ColumnSpan="3" />
+        <Button Name="TweetButton" Grid.Row="1" Grid.Column="4" Content="ツイート" Click="TweetButtonClick" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" >
+        <Button.ContextMenu>
+            <ContextMenu>
+                    <MenuItem Header="認証設定をリセット" Click="ResetClick"></MenuItem>
+            </ContextMenu>
+        </Button.ContextMenu>
+        </Button>
+    </Grid>
+</UserControl>

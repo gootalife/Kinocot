@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="Kinocot.Plugin.Memo.MemoControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="150">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="24*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Rectangle Fill="White" Stroke="Black" RadiusX="5" RadiusY="5" StrokeThickness="2" Grid.RowSpan="9" Grid.ColumnSpan="4" Margin="0"/>
+        <TextBlock TextWrapping="Wrap" Text="ちょいメモ" Canvas.Top="7" FontWeight="Bold" FontSize="14" Canvas.Left="5" Grid.Column="1"/>
+        <ListBox x:Name="Memo_ListBox" Grid.ColumnSpan="2" Grid.Column="1" BorderThickness="0" Grid.Row="2"/>
+        <TextBox x:Name="Memo_TextBox" Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="1"/>
+        <Button x:Name="Add_Button" Click="AddItem" Content="追加" Grid.Row="6" Grid.Column="1" BorderThickness="1"/>
+        <Button x:Name="Del_Button" Click="DeleteItem" Content="削除" Grid.Row="6" Grid.Column="2" BorderThickness="1"/>
+    </Grid>
+</UserControl>

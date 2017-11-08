@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="Kinocot.Plugin.Timer.TimerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Kinocot.Plugin.Timer"
+             mc:Ignorable="d" 
+             d:DesignHeight="110" d:DesignWidth="150">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Rectangle Fill="White" Stroke="Black" RadiusX="5" RadiusY="5" StrokeThickness="2" Margin="0" Grid.RowSpan="7" Grid.ColumnSpan="9"/>
+        <TextBlock Text="タイマー" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <TextBlock Name="SettingMinute" Text="00" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" TextAlignment="Right" FontSize="20" Grid.Column="1" />
+        <Button Name="MinuteUpButton" Content="▲" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="2" FontSize="10" Click="MinuteUpButtonClick" Grid.Row="1"/>
+        <Button Name="MinuteDownBotton" Content="▼" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Row="2" Grid.Column="2" VerticalAlignment="Top" FontSize="10" Click="MinuteDownBottonClick"/>
+        <TextBlock Grid.Column="3" Text="min" Grid.Row="2" TextAlignment="Right" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="14" />
+
+        <TextBlock Name="SettingSecond" Text="00" Grid.Row="1" Grid.Column="5" Grid.RowSpan="2" VerticalAlignment="Center" TextAlignment="Right" FontSize="20" />
+        <Button Name="SecondUpBotton" Content="▲" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Row="1" Grid.Column="6" FontSize="10" Click="SecondUpBottonClick"/>
+        <Button Name="SecondDownBotton" Content="▼" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Row="2" Grid.Column="6" FontSize="10" Click="SecondDownBottonClick"/>
+        <TextBlock Grid.Column="7" Text="sec" Grid.Row="2" TextAlignment="Right" VerticalAlignment="Top" FontSize="14" HorizontalAlignment="Center" />
+
+        <TextBlock Name="CountMinute" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Text="00" TextAlignment="Center" VerticalAlignment="Center" FontSize="24" />
+        <TextBlock Grid.Row="3" Grid.Column="4" Text=":" TextAlignment="Center" FontSize="20" />
+        <TextBlock Name="CountSecond" Grid.Row="3" Grid.Column="5" Grid.ColumnSpan="2" Text="00" TextAlignment="Center" VerticalAlignment="Center" FontSize="24" />
+        <Grid Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="7">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Button Name="SetButton" Content="セット" Click="SetButtonClick" FontSize="10" />
+            <Button Name="StartButton" Content="スタート" Grid.Column="2" Click="StartButtonClick" FontSize="10" />
+            <Button Name="ResetButton" Content="リセット" Grid.Column="4" Click="ResetButtonClick" FontSize="10" />
+        </Grid>
+    </Grid>
+</UserControl>
