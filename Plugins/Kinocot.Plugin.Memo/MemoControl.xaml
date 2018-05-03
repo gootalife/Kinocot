@@ -23,10 +23,10 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Rectangle Fill="White" Stroke="Black" RadiusX="5" RadiusY="5" StrokeThickness="2" Grid.RowSpan="9" Grid.ColumnSpan="4" Margin="0"/>
-        <TextBlock TextWrapping="Wrap" Text="ちょいメモ" Canvas.Top="7" FontWeight="Bold" FontSize="14" Canvas.Left="5" Grid.Column="1"/>
-        <ListBox x:Name="Memo_ListBox" Grid.ColumnSpan="2" Grid.Column="1" BorderThickness="0" Grid.Row="2"/>
-        <TextBox x:Name="Memo_TextBox" Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="1"/>
-        <Button x:Name="Add_Button" Click="AddItem" Content="追加" Grid.Row="6" Grid.Column="1" BorderThickness="1"/>
-        <Button x:Name="Del_Button" Click="DeleteItem" Content="削除" Grid.Row="6" Grid.Column="2" BorderThickness="1"/>
+        <TextBlock TextWrapping="Wrap" Text="Mini Memo" Canvas.Top="7" FontWeight="Bold" Canvas.Left="5" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center"/>
+        <ListBox x:Name="MemoListBox" Grid.ColumnSpan="2" Grid.Column="1" BorderThickness="0" Grid.Row="2"/>
+        <TextBox x:Name="MemoTextBox" Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="1"/>
+        <Button Click="AddItem" Content="Add" Grid.Row="6" Grid.Column="1" BorderThickness="1"/>
+        <Button Click="DeleteItem" Content="Delete" Grid.Row="6" Grid.Column="2" BorderThickness="1"/>
     </Grid>
 </UserControl>

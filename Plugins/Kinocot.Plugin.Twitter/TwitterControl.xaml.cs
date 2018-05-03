@@ -1,9 +1,11 @@
 ﻿using CoreTweet;
+using Microsoft.VisualBasic;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace Kinocot.Plugin.Twitter
 {
@@ -20,36 +22,59 @@ namespace Kinocot.Plugin.Twitter
         private Tokens tokens;
         private OAuth.OAuthSession session;
 
-        private bool isAvailable;
+        private bool isAuthenticated;
 
         public TwitterControl()
         {
             InitializeComponent();
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
             consumerKey = Properties.Settings.Default.ConsumerKey;
             consumerSecret = Properties.Settings.Default.ConsumerSecret;
             accessToken = Properties.Settings.Default.AccessToken;
             accessTokenSecret = Properties.Settings.Default.AccessTokenSecret;
-            var task = Task.Run(() =>
+            // APIKeyが用意されていたらトークンの取得を試みる
+            if (!string.IsNullOrEmpty(consumerKey) && !string.IsNullOrEmpty(consumerSecret) && !string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(accessTokenSecret))
             {
-                // 認証されていない時
-                if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(accessTokenSecret))
-                {
-                    ChangeAuthenticationMode();
-                }
-                else
+                try
                 {
                     // トークン生成
-                    tokens = Tokens.Create(Properties.Settings.Default.ConsumerKey, Properties.Settings.Default.ConsumerSecret,
-                                            Properties.Settings.Default.AccessToken, Properties.Settings.Default.AccessTokenSecret);
+                    tokens = Tokens.Create(consumerKey, consumerSecret, accessToken, accessTokenSecret);
                     ChangeTweetMode();
                 }
-            });
+                catch
+                {
+                    MessageBox.Show("自動ログインに失敗しました。再設定が必要です。", "自動ログイン失敗", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                ChangeAuthenticationMode();
+            }
         }
 
+        // ツイートボタン
         private void TweetButtonClick(object sender, RoutedEventArgs e)
         {
+            Tweet();
+        }
+
+        // CTRL + ENTER でTweet
+        private void TweetTextKeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.Modifiers == ModifierKeys.Control && Keyboard.IsKeyDown(Key.Enter))
+            {
+                Tweet();
+            }
+        }
+
+        // ツイート PINコードの入力確定
+        private void Tweet()
+        {
             // 認証されているかどうか
-            if (isAvailable == true)
+            if (isAuthenticated == true)
             {
                 // ツイート
                 string text = TweetText.Text;
@@ -57,13 +82,14 @@ namespace Kinocot.Plugin.Twitter
                 {
                     return;
                 }
-                else if (text.Length <= 140)
+                else if (text.Length <= 280)
                 {
-                    tokens.Statuses.UpdateAsync(new Dictionary<string, object>() { { "status", text } });
+                    tokens.Statuses.UpdateAsync(status => text);
                     TweetText.Text = "";
-                } else
+                }
+                else
                 {
-                    MessageBox.Show("文字数が多すぎだよ!");
+                    MessageBox.Show("文字数が280文字を超えています。", "文字数オーバー", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             else
@@ -76,69 +102,87 @@ namespace Kinocot.Plugin.Twitter
         // 認証手順と保存
         private void Authenticate()
         {
-            // 取得
-            string pinCode = TweetText.Text;
             try
             {
-                tokens = OAuth.GetTokens(session, pinCode);
-                // トークンを保存
-                Properties.Settings.Default.AccessToken = tokens.AccessToken.ToString();
-                Properties.Settings.Default.AccessTokenSecret = tokens.AccessTokenSecret.ToString();
+                // APIKeyの設定
+                consumerKey = Interaction.InputBox("ConsumerKeyを入力", "APIKey設定", consumerKey, -1, -1);
+                consumerSecret = Interaction.InputBox("ConsumerSecretを入力", "APIKey設定", consumerSecret, -1, -1);
+                // 認証用のURL
+                session = OAuth.Authorize(consumerKey, consumerSecret);
+                var url = session.AuthorizeUri;
+                // ブラウザを起動
+                System.Diagnostics.Process.Start(url.ToString());
+                isAuthenticated = false;
+                Properties.Settings.Default.ConsumerKey = consumerKey;
+                Properties.Settings.Default.ConsumerSecret = consumerSecret;
                 Properties.Settings.Default.Save();
-                MessageBox.Show("認証設定を保存したよ!");
+            }
+            catch
+            {
+                MessageBox.Show("APIKeyの設定に誤りがあります。", "PINコード発行失敗", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            // 取得
+            try
+            {
+                // PINコードの入力
+                var PINCode = "";
+                PINCode = Interaction.InputBox("PINコードを入力", "認証設定", "", -1, -1);
+                tokens = OAuth.GetTokens(session, PINCode);
+                // トークンを保存
+                accessToken = tokens.AccessToken;
+                accessTokenSecret = tokens.AccessTokenSecret;
+                Properties.Settings.Default.AccessToken = accessToken;
+                Properties.Settings.Default.AccessTokenSecret = accessTokenSecret;
+                Properties.Settings.Default.Save();
+                MessageBox.Show("認証設定を保存しました。", "ログイン成功");
                 TweetText.Text = "";
                 // トークン生成
-                tokens = Tokens.Create(Properties.Settings.Default.ConsumerKey, Properties.Settings.Default.ConsumerSecret,
-                                        Properties.Settings.Default.AccessToken, Properties.Settings.Default.AccessTokenSecret);
+                tokens = Tokens.Create(consumerKey, consumerSecret,
+                                        accessToken, accessTokenSecret);
                 ChangeTweetMode();
             }
             catch
             {
-                MessageBox.Show("入力エラーだよ!");
-                TweetText.Text = "";
+                MessageBox.Show("入力エラーです。", "入力値エラー", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        private void ResetClick(object sender, RoutedEventArgs e)
+        // 認証のリセット
+        private void Reset_Click(object sender, RoutedEventArgs e)
         {
-            isAvailable = false;
-            // トークンをリセット
-            Properties.Settings.Default.AccessToken = null;
-            Properties.Settings.Default.AccessTokenSecret = null;
-            Properties.Settings.Default.Save();
-            MessageBox.Show("認証設定をリセットしたよ!");
-            ChangeAuthenticationMode();
+            if (isAuthenticated == true)
+            {
+                // トークンをリセット
+                Properties.Settings.Default.AccessToken = null;
+                Properties.Settings.Default.AccessTokenSecret = null;
+                Properties.Settings.Default.Save();
+                MessageBox.Show("ログアウトしました。", "ログアウト");
+                ChangeAuthenticationMode();
+            }
+            else
+            {
+                MessageBox.Show("ログインしていません。", "ログアウト失敗", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
         }
 
+        // 認証モード
         private void ChangeAuthenticationMode()
         {
-            Dispatcher.Invoke(new Action(() =>
-            {
-                isAvailable = false;
-                TweetButton.Content = "認証";
-                Navi.Text = "PINコードを入力してね!";
-                // 認証用のURL
-                session = OAuth.Authorize(consumerKey, consumerSecret);
-                Uri url = session.AuthorizeUri;
-                // ブラウザを起動
-                System.Diagnostics.Process.Start(url.ToString());
-            }));
-            
+            isAuthenticated = false;
+            TweetButton.Content = "Login";
+            Navi.Text = "Input PIN code";
+            TweetText.Text = "";
         }
 
+        // ツイートモード
         private void ChangeTweetMode()
         {
-            var task = Task.Run(() =>
-            {
-                isAvailable = true;
-                UserResponse profile = tokens.Account.VerifyCredentials();
-                Dispatcher.Invoke(new Action(() =>
-                {
-                    TweetButton.Content = "ツイート";
-                    Navi.Text = $"{profile.Name}@{profile.ScreenName}";
-                }));
-            });
-
+            isAuthenticated = true;
+            TweetText.Text = "";
+            var profile = tokens.Account.VerifyCredentials();
+            TweetButton.Content = "Tweet";
+            Navi.Text = $"{profile.Name}@{profile.ScreenName}";
         }
     }
 }

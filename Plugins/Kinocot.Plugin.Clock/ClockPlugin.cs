@@ -15,7 +15,7 @@ namespace Kinocot.Plugin.Clock
         {
             get
             {
-                return "時計";
+                return "Clock";
             }
         }
         // コントロールを返す

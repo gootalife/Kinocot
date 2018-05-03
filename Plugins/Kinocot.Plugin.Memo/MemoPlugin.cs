@@ -10,7 +10,7 @@ namespace Kinocot.Plugin.Memo
         {
             get
             {
-                return "ちょいメモ";
+                return "Mini Memo";
             }
         }
         // コントロールを返す

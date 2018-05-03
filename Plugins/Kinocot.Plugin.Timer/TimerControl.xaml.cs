@@ -42,12 +42,14 @@ namespace Kinocot.Plugin.Timer
                     // 更新のストップ
                     t.Stop();
                     // 通知の設定
-                    System.Windows.Forms.NotifyIcon notifyIcon = new System.Windows.Forms.NotifyIcon();
-                    notifyIcon.Icon = Properties.Resources.Icon;
-                    notifyIcon.Visible = true;
-                    notifyIcon.BalloonTipTitle = "タイマー";
-                    notifyIcon.BalloonTipText = "ピピピピピピピピピピ!";
-                    notifyIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+                    System.Windows.Forms.NotifyIcon notifyIcon = new System.Windows.Forms.NotifyIcon
+                    {
+                        Icon = Properties.Resources.Icon,
+                        Visible = true,
+                        BalloonTipTitle = "タイマー",
+                        BalloonTipText = "ピピピピピピピピピピ!",
+                        BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info
+                    };
                     notifyIcon.ShowBalloonTip(5000);
                     var delay = new DispatcherTimer(DispatcherPriority.SystemIdle)
                     {
@@ -68,7 +70,7 @@ namespace Kinocot.Plugin.Timer
         // 数字の増減
         private void MinuteUpButtonClick(object sender, RoutedEventArgs e)
         {
-            int num = int.Parse(SettingMinute.Text);
+            var num = int.Parse(SettingMinute.Text);
             if (num < 99)
             {
                 num++;
@@ -78,7 +80,7 @@ namespace Kinocot.Plugin.Timer
 
         private void MinuteDownBottonClick(object sender, RoutedEventArgs e)
         {
-            int num = int.Parse(SettingMinute.Text);
+            var num = int.Parse(SettingMinute.Text);
             if (num > 0)
             {
                 num--;
@@ -88,7 +90,7 @@ namespace Kinocot.Plugin.Timer
 
         private void SecondUpBottonClick(object sender, RoutedEventArgs e)
         {
-            int num = int.Parse(SettingSecond.Text);
+            var num = int.Parse(SettingSecond.Text);
             if (num < 58)
             {
                 num++;
@@ -98,7 +100,7 @@ namespace Kinocot.Plugin.Timer
 
         private void SecondDownBottonClick(object sender, RoutedEventArgs e)
         {
-            int num = int.Parse(SettingSecond.Text);
+            var num = int.Parse(SettingSecond.Text);
             if (num > 0)
             {
                 num--;

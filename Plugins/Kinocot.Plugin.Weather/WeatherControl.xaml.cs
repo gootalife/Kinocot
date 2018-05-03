@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.VisualBasic;
+using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -16,35 +17,47 @@ namespace Kinocot.Plugin.Weather
     {
         private string baseUrl = "http://api.openweathermap.org/data/2.5/forecast";
         private string cityId = Properties.Settings.Default.CityId;
-        private string apiKey = Properties.Settings.Default.ApiKey;
+        private string APIKey = Properties.Settings.Default.APIKey;
 
         public WeatherControl()
         {
             InitializeComponent();
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            APIKey = Interaction.InputBox("APIKeyを入力\nAPIKeyの取得はhttp://openweathermap.org/", "APIKey設定", APIKey, -1, -1);
+            var dtToday = DateTime.Today;
+            Today.Text = dtToday.ToString("MM/dd");
+            Tomorrow.Text = dtToday.AddDays(1).ToString("MM/dd");
+            Tdat.Text = dtToday.AddDays(2).ToString("MM/dd");
             CityId.Text = Properties.Settings.Default.CityId;
             // Jsonの取得
             InitInfo();
         }
 
         // 3日間分の情報を取得
-        private void InitInfo()
+        private async void InitInfo()
         {
-            string url = $"{baseUrl}?id={cityId}&units=metric&cnt=3&appid={apiKey}";
             try
             {
+                string url = $"{baseUrl}?id={cityId}&units=metric&cnt=3&appid={APIKey}";
                 // 情報を表示
-                var task = Task.Run(() =>
+                await Task.Run(() =>
                 {
                     string json = new HttpClient().GetStringAsync(url).Result;
                     JObject jobj = JObject.Parse(json);
                     SetWeatherInfo(jobj);
                     SaveJson(jobj);
                 });
+                Properties.Settings.Default.APIKey = APIKey;
+                Properties.Settings.Default.Save();
             }
-            catch (Exception e)
+            catch
             {
-                MessageBox.Show(e.Message);
+                MessageBox.Show("APIKeyの設定に誤りがあります。", "APIKeyエラー", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            
         }
 
         // Jsonの保存
@@ -62,17 +75,24 @@ namespace Kinocot.Plugin.Weather
             Dispatcher.Invoke(new Action(() =>
             {
                 string url = "http://openweathermap.org/img/w/";
-                InitWetherInfo(jobj, TodayMaxTemp, TodayMinTemp, TodayWeatherImage, url, 0);
-                InitWetherInfo(jobj, TomorrowMaxTemp, TomorrowMinTemp, TomorrowWeatherImage, url, 1);
-                InitWetherInfo(jobj, TdatMaxTemp, TdatMinTemp, TdatWeatherImage, url, 2);
+                try
+                {
+                    InitWetherInfo(jobj, TodayMaxTemp, TodayMinTemp, TodayWeatherImage, url, 0);
+                    InitWetherInfo(jobj, TomorrowMaxTemp, TomorrowMinTemp, TomorrowWeatherImage, url, 1);
+                    InitWetherInfo(jobj, TdatMaxTemp, TdatMinTemp, TdatWeatherImage, url, 2);
+                }
+                catch
+                {
+                    MessageBox.Show("情報が出しく所得できませんでした", "取得情報エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }));
         }
 
         // 情報の設定
         private void InitWetherInfo(JObject jobj, TextBlock max, TextBlock min, Image image, string url, int index)
         {
-            max.Text = $"Max {(int)jobj["list"][index]["main"]["temp_max"]}℃";
-            min.Text = $"Min {(int)jobj["list"][index]["main"]["temp_min"]}℃";
+            max.Text = $"Max {(int)jobj["list"][index]["main"]["temp_max"]}°C";
+            min.Text = $"Min {(int)jobj["list"][index]["main"]["temp_min"]}°C";
             string icon = (string)jobj["list"][index]["weather"][0]["icon"];
             image.Source = new BitmapImage(new Uri($"{url}{icon}.png"));
         }
@@ -82,7 +102,6 @@ namespace Kinocot.Plugin.Weather
             // CityIdの保存
             Properties.Settings.Default.CityId = CityId.Text;
             Properties.Settings.Default.Save();
-            MessageBox.Show("地点を変更したよ!");
             // 情報の更新
             InitInfo();
         }

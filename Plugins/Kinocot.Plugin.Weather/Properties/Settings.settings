@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="Width" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">300</Value>
+      <Value Profile="(Default)">250</Value>
     </Setting>
     <Setting Name="Height" Type="System.Double" Scope="User">
       <Value Profile="(Default)">80</Value>
@@ -20,7 +20,7 @@
     <Setting Name="CityId" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="ApiKey" Type="System.String" Scope="User">
+    <Setting Name="APIKey" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

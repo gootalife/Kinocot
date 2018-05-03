@@ -18,6 +18,6 @@
             <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
         <Rectangle Fill="White" Stroke="Black" RadiusX="5" RadiusY="5" StrokeThickness="2" Grid.RowSpan="3" Grid.ColumnSpan="3"/>
-        <TextBlock x:Name="Date_Text" Text="2000/00/00 00:00:00" FontSize="14" TextAlignment="Center" Grid.Row="1" Grid.Column="1"/>
+        <TextBlock x:Name="Date" Text="2000/00/00 00:00:00" FontSize="14" TextAlignment="Center" Grid.Row="1" Grid.Column="1"/>
     </Grid>
 </UserControl>

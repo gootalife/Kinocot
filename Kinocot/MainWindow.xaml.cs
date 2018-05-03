@@ -26,14 +26,24 @@ namespace Kinocot
         private Grid[] grids;
         // ドラッグ移動を担うマン
         private MouseDragElementBehavior[] dragBehaviors;
+        private MouseDragElementBehavior mouseDragElementBehavior = new MouseDragElementBehavior();
         // プラグイン読み込み屋さん
         private PluginLorder pl;
 
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
             // マスコット画像の読み込み
             SetMascotImage();
+            // マスコットをドラッグで移動可能にする
+            //mouseDragElementBehavior = new MouseDragElementBehavior();
+            //mouseDragElementBehavior.ConstrainToParentBounds = true;
+            //mouseDragElementBehavior.Attach(Mascot);
+            
             // プラグインの読み込み
             pl = new PluginLorder();
             GeneratePluginMenu(pl.plugins);
@@ -42,9 +52,6 @@ namespace Kinocot
             dragBehaviors = new MouseDragElementBehavior[pl.plugins.Count];
             // オートブートのチェック
             CheckAutoBootSetting(pl.plugins);
-            // ウィンドウの位置を前回と同じ位置に設定
-            Left = Properties.Settings.Default.MainWindow_Left;
-            Top = Properties.Settings.Default.MainWindow_Top;
         }
 
         // マスコット画像を設定
@@ -55,18 +62,20 @@ namespace Kinocot
             mascot.BeginInit();
             mascot.UriSource = new Uri(Directory.GetCurrentDirectory() + @"\Resources\mascot.gif");
             mascot.EndInit();
-            // デフォルトの位置に配置
-            Canvas.SetLeft(Mascot, Properties.Settings.Default.Mascot_Left);
-            Canvas.SetTop(Mascot, Properties.Settings.Default.Mascot_Top);
+            Mascot.Width = mascot.Width;
+            Mascot.Height = mascot.Height;
             ImageBehavior.SetAnimatedSource(Mascot, mascot);
+            // デフォルトの位置に配置
+            Canvas.SetLeft(Mascot, Width - mascot.Width);
+            Canvas.SetTop(Mascot, Height - mascot.Height);
         }
 
         // プラグインメニューの動的生成
         private void GeneratePluginMenu(List<IPlugin> plugins)
         {
-            int count = 0;
+            var count = 0;
             // プラグインの数だけ要素を追加
-            foreach (IPlugin plugin in plugins)
+            foreach (var plugin in plugins)
             {
                 var item = new MenuItem();
                 item.Header = plugin.Name;
@@ -79,14 +88,14 @@ namespace Kinocot
                     BootPlugin(plugin);
                 };
                 // アイテム追加
-                PluginsMenu.Items.Add(item);
+                PluginMenu.Items.Add(item);
             }
         }
 
         // プラグインのオートブート設定の確認
         void CheckAutoBootSetting(List<IPlugin> plugins)
         {
-            foreach (IPlugin plugin in plugins)
+            foreach (var plugin in plugins)
             {
                 // オートブートが有効なら
                 if (plugin.IsAutoBoot == true)
@@ -116,24 +125,24 @@ namespace Kinocot
                 // コンテキストメニューの生成
                 var cm = new ContextMenu();
                 var item = new MenuItem();
-                item.Header = plugin.Name + " を閉じる";
+                item.Header = $"{plugin.Name} を閉じる";
                 // クリックイベントを追加
                 item.Click += (s, e) =>
                 {
                     // クリックすると起動
                     plugin.CloseUserControl();
-                    ClosePluginAsync(plugin);
+                    ClosePlugin(plugin);
                 };
                 // オートブート設定用
                 var autoBoot = new MenuItem();
                 // オートブートがオンのとき
                 if (plugin.IsAutoBoot == true)
                 {
-                    autoBoot.Header = plugin.Name + " のオートブートをオフにする";
+                    autoBoot.Header = $"{plugin.Name} のオートブートをオフにする";
                 }
                 else
                 {
-                    autoBoot.Header = plugin.Name + " のオートブートをオンにする";
+                    autoBoot.Header = $"{plugin.Name} のオートブートをオンにする";
                 }
                 // クリックイベントを追加
                 autoBoot.Click += (s, e) =>
@@ -155,7 +164,7 @@ namespace Kinocot
             else
             {
                 // 重複起動時
-                MessageBox.Show(string.Format("{0} を閉じてね!", plugin.Name), "重複ダメ、絶対");
+                MessageBox.Show(this, $"{plugin.Name} を閉じてください。", "重複起動ダメ、絶対", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
 
@@ -165,28 +174,19 @@ namespace Kinocot
             if (plugin.IsAutoBoot == true)
             {
                 plugin.IsAutoBoot = false;
-                MessageBox.Show(plugin.Name + " のオートブートをオフにしたよ!", "設定変更");
-                autoBoot.Header = plugin.Name + " のオートブートをオンにする";
+                MessageBox.Show(this, $"{plugin.Name} のオートブートをオフにしました。", "設定変更");
+                autoBoot.Header = $"{plugin.Name} のオートブートをオンにする";
             }
             else
             {
                 plugin.IsAutoBoot = true;
-                MessageBox.Show(plugin.Name + " のオートブートをオンにしたよ!", "設定変更");
-                autoBoot.Header = plugin.Name + " のオートブートをオフにする";
+                MessageBox.Show(this, $"{plugin.Name} のオートブートをオンにしました。", "設定変更");
+                autoBoot.Header = $"{plugin.Name} のオートブートをオフにする";
             }
         }
 
-        // プラグイングリッドのリサイズ
-        private void ResizeGrid(IPlugin plugin ,Grid grid)
-        {
-            grid.Width = plugin.Width;
-            grid.Height = plugin.Height;
-            Canvas.SetLeft(grid, plugin.Left);
-            Canvas.SetTop(grid, plugin.Top);
-        }
-
         // コンテキストメニューからプラグインの退場
-        private async Task ClosePluginAsync(IPlugin plugin)
+        private async void ClosePlugin(IPlugin plugin)
         {
             // プラグインが開いている時
             if (plugin.IsOpen == true)
@@ -210,38 +210,21 @@ namespace Kinocot
                 PluginCloseAnimation(grids[plugin.Index], plugin.Width, plugin.Height, Canvas.GetLeft(grids[plugin.Index]), Canvas.GetTop(grids[plugin.Index]), 200);
                 // アニメーションが終わるまで待機
                 await Task.Delay(200);
-                // 要素を取り除きnullにする
+                // 要素を取り除く
                 grids[plugin.Index].Children.RemoveAt(0);
-                dragBehaviors[plugin.Index] = null;
-                grids[plugin.Index] = null;
             }
         }
 
         // 終了処理
         private void QuitClick(object sender, RoutedEventArgs e)
         {
-            // 最小化・最大化されていないときのみ設定を保存
-            if (WindowState == WindowState.Normal)
-            {
-                // ウィンドウの値を Settings に格納
-                Properties.Settings.Default.MainWindow_Left = Left;
-                Properties.Settings.Default.MainWindow_Top = Top;
-                // 設定を保存
-                Properties.Settings.Default.Save();
-            }
             Close();
-        }
-
-        // マスコットをドラッグでウィンドウ全体移動
-        private void WindowDragMove(object sender, MouseButtonEventArgs e)
-        {
-            DragMove();
         }
 
         // 登場アニメーション
         private void PluginOpenAnimation(Grid grid, IPlugin plugin, double time)
         {  
-            var widthAnimetion = new DoubleAnimation
+            var widthAnimation = new DoubleAnimation
             {
                 From = 0,
                 To = plugin.Width,
@@ -266,7 +249,7 @@ namespace Kinocot
                 Duration = TimeSpan.FromMilliseconds(time)
             };
             // そぉぃ
-            grid.BeginAnimation(WidthProperty, widthAnimetion);
+            grid.BeginAnimation(WidthProperty, widthAnimation);
             grid.BeginAnimation(LeftProperty, leftAnimation);
             grid.BeginAnimation(TopProperty, topAnimation);
             grid.BeginAnimation(HeightProperty, heightAnimation);
@@ -304,6 +287,30 @@ namespace Kinocot
             grid.BeginAnimation(LeftProperty, leftAnimation);
             grid.BeginAnimation(TopProperty, topAnimation);
             grid.BeginAnimation(HeightProperty, heightAnimation);
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            double left = mouseDragElementBehavior.X;
+            double top = mouseDragElementBehavior.Y;
+            // posX,posYがNaNなら修正
+            if (double.IsNaN(left) == true)
+            {
+                left = Canvas.GetLeft(Mascot);
+            }
+            if (double.IsNaN(top) == true)
+            {
+                top = Canvas.GetTop(Mascot);
+            }
+            //Properties.Settings.Default.Mascot_Left = left;
+            //Properties.Settings.Default.Mascot_Top = top;
+            Properties.Settings.Default.Save();
+        }
+
+        // マスコットをドラッグで移動
+        private void Mascot_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
         }
     }
 }

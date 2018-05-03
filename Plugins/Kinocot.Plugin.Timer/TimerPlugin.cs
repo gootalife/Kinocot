@@ -10,7 +10,7 @@ namespace Kinocot.Plugin.Timer
         {
             get
             {
-                return "タイマー";
+                return "Timer";
             }
         }
         // コントロールを返す

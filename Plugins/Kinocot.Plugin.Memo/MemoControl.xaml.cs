@@ -24,19 +24,19 @@ namespace Kinocot.Plugin.Memo
         {
             foreach (string data in mm.datas)
             {
-                Memo_ListBox.Items.Add(data);
+                MemoListBox.Items.Add(data);
             }
         }
 
         // テキストボックスの内容をリストボックスに追加
         private void AddItem(object sender, RoutedEventArgs e)
         {
-            string text = Memo_TextBox.Text;
+            string text = MemoTextBox.Text;
             // 空欄でないなら追加
             if (text != "")
             {
-                Memo_ListBox.Items.Add(text);
-                Memo_TextBox.Text = "";
+                MemoListBox.Items.Add(text);
+                MemoTextBox.Text = "";
             }
             List<string> datas = ConvertFromListBoxToList();
             // 保存
@@ -46,7 +46,7 @@ namespace Kinocot.Plugin.Memo
         // リストボックスの選択項目を削除
         private void DeleteItem(object sender, RoutedEventArgs e)
         {
-            Memo_ListBox.Items.Remove(Memo_ListBox.SelectedItem);
+            MemoListBox.Items.Remove(MemoListBox.SelectedItem);
             List<string> datas = ConvertFromListBoxToList();
             // 保存
             mm.SaveMemo(datas);
@@ -56,7 +56,7 @@ namespace Kinocot.Plugin.Memo
         private List<string> ConvertFromListBoxToList()
         {
             var datas = new List<string>();
-            foreach (string data in Memo_ListBox.Items)
+            foreach (string data in MemoListBox.Items)
             {
                 datas.Add(data);
             }

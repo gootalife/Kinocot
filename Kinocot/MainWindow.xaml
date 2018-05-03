@@ -3,20 +3,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:gif="http://wpfanimatedgif.codeplex.com"
         x:Class="Kinocot.MainWindow" 
         mc:Ignorable="d"
-        Title="Kinocot" Height="400" Width="450"
+        Title="Kinocot" Height="450" Width="450"
         AllowsTransparency="True"
         Background="Transparent"
         WindowStyle="None"
         ResizeMode="NoResize"
-        Topmost="True">
+        Topmost="True" FontFamily="/Kinocot;component/Resources/#SAO UI" Loaded="Window_Loaded" Closed="Window_Closed">
     <Canvas Name="Root">
-        <Image x:Name="Mascot" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="180" Canvas.Top="90" MouseLeftButtonDown="WindowDragMove" Panel.ZIndex="1">
+        <Image x:Name="Mascot" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top" Panel.ZIndex="1" MouseLeftButtonDown="Mascot_MouseLeftButtonDown">
             <Image.ContextMenu>
                 <ContextMenu>
-                    <MenuItem x:Name="PluginsMenu" Header="機能"/>
+                    <MenuItem x:Name="PluginMenu" Header="機能"/>
                     <MenuItem Header="終了" Click="QuitClick"/>
                 </ContextMenu>
             </Image.ContextMenu>

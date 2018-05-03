@@ -1,17 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace Kinocot.Plugin.Clock
@@ -26,7 +14,7 @@ namespace Kinocot.Plugin.Clock
         public ClockControl()
         {
             InitializeComponent();
-            Date_Text.Text = "";
+            Date.Text = "";
             // タイマーイベントの発生間隔を設定
             timer = CreateTimer(100);
             timer.Start();
@@ -44,7 +32,7 @@ namespace Kinocot.Plugin.Clock
             // タイマーイベントの定義
             t.Tick += (s, e) => {
                 // 現在の時分秒をテキストに設定
-                Date_Text.Text = DateTime.Now.ToString();
+                Date.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
             };
             // 生成したタイマーを返す
             return t;
