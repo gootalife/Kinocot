@@ -42,7 +42,7 @@ namespace Kinocot.Plugin.Timer
                     // 更新のストップ
                     t.Stop();
                     // 通知の設定
-                    System.Windows.Forms.NotifyIcon notifyIcon = new System.Windows.Forms.NotifyIcon
+                    var notifyIcon = new System.Windows.Forms.NotifyIcon
                     {
                         Icon = Properties.Resources.Icon,
                         Visible = true,

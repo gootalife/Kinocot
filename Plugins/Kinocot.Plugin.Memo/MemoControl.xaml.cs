@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.Composition;
+using System.Collections.Specialized;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,57 +11,48 @@ namespace Kinocot.Plugin.Memo
     /// </summary>
     public partial class MemoControl : UserControl
     {
-        private MemoManager mm;
+        private List<string> memo = Properties.Settings.Default.Memo.Cast<string>().ToList();
 
         public MemoControl()
         {
             InitializeComponent();
-            mm = new MemoManager();
             AddToList();
         }
 
         // リストボックスにメモの内容を追加
         private void AddToList()
         {
-            foreach (string data in mm.datas)
+            foreach (var line in memo)
             {
-                MemoListBox.Items.Add(data);
+                MemoListBox.Items.Add(line);
             }
         }
 
         // テキストボックスの内容をリストボックスに追加
-        private void AddItem(object sender, RoutedEventArgs e)
+        private void AddNewItem(object sender, RoutedEventArgs e)
         {
-            string text = MemoTextBox.Text;
             // 空欄でないなら追加
-            if (text != "")
+            if (MemoTextBox.Text != "")
             {
-                MemoListBox.Items.Add(text);
+                MemoListBox.Items.Add(MemoTextBox.Text);
                 MemoTextBox.Text = "";
             }
-            List<string> datas = ConvertFromListBoxToList();
             // 保存
-            mm.SaveMemo(datas);
+            var sc = new StringCollection();
+            sc.AddRange(MemoListBox.Items.Cast<string>().ToArray());
+            Properties.Settings.Default.Memo = sc;
+            Properties.Settings.Default.Save();
         }
 
         // リストボックスの選択項目を削除
         private void DeleteItem(object sender, RoutedEventArgs e)
         {
             MemoListBox.Items.Remove(MemoListBox.SelectedItem);
-            List<string> datas = ConvertFromListBoxToList();
             // 保存
-            mm.SaveMemo(datas);
-        }
-
-        // リストボックスの内容を取得
-        private List<string> ConvertFromListBoxToList()
-        {
-            var datas = new List<string>();
-            foreach (string data in MemoListBox.Items)
-            {
-                datas.Add(data);
-            }
-            return datas;
+            var sc = new StringCollection();
+            sc.AddRange(MemoListBox.Items.Cast<string>().ToArray());
+            Properties.Settings.Default.Memo = sc;
+            Properties.Settings.Default.Save();
         }
     }
 }

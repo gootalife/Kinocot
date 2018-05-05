@@ -26,7 +26,7 @@
         <TextBlock TextWrapping="Wrap" Text="Mini Memo" Canvas.Top="7" FontWeight="Bold" Canvas.Left="5" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center"/>
         <ListBox x:Name="MemoListBox" Grid.ColumnSpan="2" Grid.Column="1" BorderThickness="0" Grid.Row="2"/>
         <TextBox x:Name="MemoTextBox" Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="1"/>
-        <Button Click="AddItem" Content="Add" Grid.Row="6" Grid.Column="1" BorderThickness="1"/>
+        <Button Click="AddNewItem" Content="Add" Grid.Row="6" Grid.Column="1" BorderThickness="1"/>
         <Button Click="DeleteItem" Content="Delete" Grid.Row="6" Grid.Column="2" BorderThickness="1"/>
     </Grid>
 </UserControl>

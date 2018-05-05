@@ -27,10 +27,6 @@ namespace Kinocot.Plugin.Twitter
         public TwitterControl()
         {
             InitializeComponent();
-        }
-
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
             consumerKey = Properties.Settings.Default.ConsumerKey;
             consumerSecret = Properties.Settings.Default.ConsumerSecret;
             accessToken = Properties.Settings.Default.AccessToken;

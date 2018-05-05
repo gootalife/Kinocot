@@ -10,7 +10,7 @@
         Background="Transparent"
         WindowStyle="None"
         ResizeMode="NoResize"
-        Topmost="True" FontFamily="/Kinocot;component/Resources/#SAO UI" Loaded="Window_Loaded" Closed="Window_Closed">
+        Topmost="True" FontFamily="/Kinocot;component/Resources/#SAO UI" Loaded="Window_Loaded" Closed="Window_Closed" WindowStartupLocation="CenterScreen">
     <Canvas Name="Root">
         <Image x:Name="Mascot" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top" Panel.ZIndex="1" MouseLeftButtonDown="Mascot_MouseLeftButtonDown">
             <Image.ContextMenu>

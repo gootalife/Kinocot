@@ -33,17 +33,18 @@ namespace Kinocot
         public MainWindow()
         {
             InitializeComponent();
+            // アイコンの設定
+            try
+            {
+                Icon = BitmapFrame.Create(new Uri(Directory.GetCurrentDirectory() + @"\Resources\Icon.ico", UriKind.RelativeOrAbsolute));
+            }
+            catch { }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             // マスコット画像の読み込み
             SetMascotImage();
-            // マスコットをドラッグで移動可能にする
-            //mouseDragElementBehavior = new MouseDragElementBehavior();
-            //mouseDragElementBehavior.ConstrainToParentBounds = true;
-            //mouseDragElementBehavior.Attach(Mascot);
-            
             // プラグインの読み込み
             pl = new PluginLorder();
             GeneratePluginMenu(pl.plugins);
@@ -57,17 +58,24 @@ namespace Kinocot
         // マスコット画像を設定
         private void SetMascotImage()
         {
-            var mascot = new BitmapImage();
-            //　画像の読み込み
-            mascot.BeginInit();
-            mascot.UriSource = new Uri(Directory.GetCurrentDirectory() + @"\Resources\mascot.gif");
-            mascot.EndInit();
-            Mascot.Width = mascot.Width;
-            Mascot.Height = mascot.Height;
-            ImageBehavior.SetAnimatedSource(Mascot, mascot);
-            // デフォルトの位置に配置
-            Canvas.SetLeft(Mascot, Width - mascot.Width);
-            Canvas.SetTop(Mascot, Height - mascot.Height);
+            try
+            {
+                var mascot = new BitmapImage();
+                //　画像の読み込み
+                mascot.BeginInit();
+                mascot.UriSource = new Uri(Directory.GetCurrentDirectory() + @"\Resources\mascot.gif");
+                mascot.EndInit();
+                Mascot.Width = mascot.Width;
+                Mascot.Height = mascot.Height;
+                ImageBehavior.SetAnimatedSource(Mascot, mascot);
+                // デフォルトの位置に配置
+                Canvas.SetLeft(Mascot, Width - mascot.Width - 100);
+                Canvas.SetTop(Mascot, Height - mascot.Height - 100);
+            }
+            catch
+            {
+                MessageBox.Show("マスコット画像の設定に失敗しました。\nResources内にmascot.gifがあるか確認してください。", "画像設定エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         // プラグインメニューの動的生成
@@ -302,8 +310,6 @@ namespace Kinocot
             {
                 top = Canvas.GetTop(Mascot);
             }
-            //Properties.Settings.Default.Mascot_Left = left;
-            //Properties.Settings.Default.Mascot_Top = top;
             Properties.Settings.Default.Save();
         }
 

@@ -22,10 +22,6 @@ namespace Kinocot.Plugin.Weather
         public WeatherControl()
         {
             InitializeComponent();
-        }
-
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
             APIKey = Interaction.InputBox("APIKeyを入力\nAPIKeyの取得はhttp://openweathermap.org/", "APIKey設定", APIKey, -1, -1);
             var dtToday = DateTime.Today;
             Today.Text = dtToday.ToString("MM/dd");
