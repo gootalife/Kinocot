@@ -36,9 +36,12 @@ namespace Kinocot.Plugin.Twitter
             {
                 try
                 {
-                    // トークン生成
-                    tokens = Tokens.Create(consumerKey, consumerSecret, accessToken, accessTokenSecret);
-                    ChangeTweetMode();
+                    Task.Run(() =>
+                    {
+                        // トークン生成
+                        tokens = Tokens.Create(consumerKey, consumerSecret, accessToken, accessTokenSecret);
+                        ChangeTweetMode();
+                    });
                 }
                 catch
                 {
@@ -66,7 +69,7 @@ namespace Kinocot.Plugin.Twitter
             }
         }
 
-        // ツイート PINコードの入力確定
+        // ツイートの入力確定
         private void Tweet()
         {
             // 認証されているかどうか
@@ -90,7 +93,7 @@ namespace Kinocot.Plugin.Twitter
             }
             else
             {
-                // PINコードの入力確定
+                // ログイン処理
                 Authenticate();
             }
         }
@@ -174,11 +177,14 @@ namespace Kinocot.Plugin.Twitter
         // ツイートモード
         private void ChangeTweetMode()
         {
-            isAuthenticated = true;
-            TweetText.Text = "";
-            var profile = tokens.Account.VerifyCredentials();
-            TweetButton.Content = "Tweet";
-            Navi.Text = $"{profile.Name}@{profile.ScreenName}";
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                isAuthenticated = true;
+                TweetText.Text = "";
+                var profile = tokens.Account.VerifyCredentials();
+                TweetButton.Content = "Tweet";
+                Navi.Text = $"{profile.Name}@{profile.ScreenName}";
+            }), null);
         }
     }
 }
