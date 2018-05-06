@@ -119,55 +119,62 @@ namespace Kinocot
             // プラグインが開いていないとき
             if (plugin.IsOpen == false)
             {
-                // 開いた状態になる
-                plugin.IsOpen = true;
-                // 枠の生成
-                grids[plugin.Index] = new Grid();
-                // マスコットよりも上側に表示する
-                // 下側だとマスコットの下に隠れた時触れなくなる
-                Canvas.SetZIndex(grids[plugin.Index], 2);
-                // ドラッグで移動可能にする
-                dragBehaviors[plugin.Index] = new MouseDragElementBehavior();
-                dragBehaviors[plugin.Index].ConstrainToParentBounds = true;
-                dragBehaviors[plugin.Index].Attach(grids[plugin.Index]);
-                // コンテキストメニューの生成
-                var cm = new ContextMenu();
-                var item = new MenuItem();
-                item.Header = $"{plugin.Name} を閉じる";
-                // クリックイベントを追加
-                item.Click += (s, e) =>
+                Task.Run(() =>
                 {
-                    // クリックすると起動
-                    plugin.CloseUserControl();
-                    ClosePlugin(plugin);
-                };
-                // オートブート設定用
-                var autoBoot = new MenuItem();
-                // オートブートがオンのとき
-                if (plugin.IsAutoBoot == true)
-                {
-                    autoBoot.Header = $"{plugin.Name} のオートブートをオフにする";
-                }
-                else
-                {
-                    autoBoot.Header = $"{plugin.Name} のオートブートをオンにする";
-                }
-                // クリックイベントを追加
-                autoBoot.Click += (s, e) =>
-                {
-                    // クリックすると起動
-                    ChangeAutoBootSetting(plugin, autoBoot);
-                };
-                // コンテキストメニューを設定
-                cm.Items.Add(autoBoot);
-                cm.Items.Add(item);
-                grids[plugin.Index].ContextMenu = cm;
-                // コントロールの設定
-                grids[plugin.Index].Children.Add(plugin.Panel);
-                // 表示
-                Root.Children.Add(grids[plugin.Index]);
-                // アニメーション
-                PluginOpenAnimation(grids[plugin.Index], plugin, 200);
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        // 開いた状態になる
+                        plugin.IsOpen = true;
+                        // 枠の生成
+                        grids[plugin.Index] = new Grid();
+                        // マスコットよりも上側に表示する
+                        // 下側だとマスコットの下に隠れた時触れなくなる
+                        Canvas.SetZIndex(grids[plugin.Index], 2);
+                        // ドラッグで移動可能にする
+                        dragBehaviors[plugin.Index] = new MouseDragElementBehavior();
+                        dragBehaviors[plugin.Index].ConstrainToParentBounds = true;
+                        dragBehaviors[plugin.Index].Attach(grids[plugin.Index]);
+                        // コントロールの設定
+                        grids[plugin.Index].Children.Add(plugin.Panel);
+                        // 表示
+                        Root.Children.Add(grids[plugin.Index]);
+                        // アニメーション
+                        PluginOpenAnimation(grids[plugin.Index], plugin, 200);
+                        // コンテキストメニューの生成
+                        var cm = new ContextMenu();
+                        var item = new MenuItem();
+                        item.Header = $"{plugin.Name} を閉じる";
+                        // クリックイベントを追加
+                        item.Click += (s, e) =>
+                        {
+                            // クリックすると起動
+                            plugin.CloseUserControl();
+                            ClosePlugin(plugin);
+                        };
+                        // オートブート設定用
+                        var autoBoot = new MenuItem();
+                        // オートブートがオンのとき
+                        if (plugin.IsAutoBoot == true)
+                        {
+                            autoBoot.Header = $"{plugin.Name} のオートブートをオフにする";
+                        }
+                        else
+                        {
+                            autoBoot.Header = $"{plugin.Name} のオートブートをオンにする";
+                        }
+                        // クリックイベントを追加
+                        autoBoot.Click += (s, e) =>
+                        {
+                            // クリックすると起動
+                            ChangeAutoBootSetting(plugin, autoBoot);
+                        };
+                        // コンテキストメニューを設定
+                        cm.Items.Add(autoBoot);
+                        cm.Items.Add(item);
+                        grids[plugin.Index].ContextMenu = cm;
+                    }), null);
+                });
+                
             }
             else
             {
