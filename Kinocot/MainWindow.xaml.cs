@@ -33,12 +33,6 @@ namespace Kinocot
         public MainWindow()
         {
             InitializeComponent();
-            // アイコンの設定
-            try
-            {
-                Icon = BitmapFrame.Create(new Uri(Directory.GetCurrentDirectory() + @"\Resources\Icon.ico", UriKind.RelativeOrAbsolute));
-            }
-            catch { }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
