@@ -9,22 +9,19 @@ namespace Kinocot.Plugin.Memo
     /// <summary>
     /// MemoControl.xaml の相互作用ロジック
     /// </summary>
-    public partial class MemoControl : UserControl
-    {
-        private List<string> memo = Properties.Settings.Default.Memo.Cast<string>().ToList();
-
+    public partial class MemoControl : UserControl;
+{
         public MemoControl()
         {
             InitializeComponent();
-            AddToList();
-        }
-
-        // リストボックスにメモの内容を追加
-        private void AddToList()
-        {
-            foreach (var line in memo)
+            var memo = Properties.Settings.Default.Memo.Cast<string>().ToList();
+            if (memo != null)
             {
-                MemoListBox.Items.Add(line);
+                // リストボックスにメモの内容を追加
+                foreach (var line in memo)
+                {
+                    MemoListBox.Items.Add(line);
+                }
             }
         }
 
