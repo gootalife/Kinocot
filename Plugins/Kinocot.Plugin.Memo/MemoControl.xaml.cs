@@ -9,8 +9,8 @@ namespace Kinocot.Plugin.Memo
     /// <summary>
     /// MemoControl.xaml の相互作用ロジック
     /// </summary>
-    public partial class MemoControl : UserControl;
-{
+    public partial class MemoControl : UserControl
+    {
         public MemoControl()
         {
             InitializeComponent();
